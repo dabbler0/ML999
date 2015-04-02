@@ -24,7 +24,7 @@ gulp.task 'compile', ->
   gulp.src('src/main.coffee')
       .pipe(browserified)
       .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(uglify())
+      #.pipe(uglify())
       .pipe(rename 'main.js')
       .pipe(sourcemaps.write '.')
       .pipe(gulp.dest './build/')

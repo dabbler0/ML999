@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  </head>
+  <body>
+    <center><h1>One-dimensional Regression Demo</h1></center>
+    <div class="row"> <!-- Config -->
+      <div class="col-lg-3">
+        <div>
+          <b>Data Generation</b>
+          <div>Polynomial bases: <input id="gen-poly" class="form-control config" value="1"/></div>
+          <div>Fourier bases: <input id="gen-fourier" class="form-control config" value="1"/></div>
+          <div>Variance: <input id="gen-variance" class="form-control config" value="1"/></div>
+          <div>Sample Size: <input id="gen-size" class="form-control config" value="500"/></div>
+        </div>
+        <div>
+          <input type="checkbox" id="linreg-check" class="config" checked>
+          <b>Linear Regression</b>
+          <div>Polynomial bases: <input id="linreg-poly" class="form-control config" value="1"/></div>
+          <div>Fourier bases: <input id="linreg-fourier" class="form-control config" value="1"/></div>
+        </div>
+        <div>
+          <input type="checkbox" id="nn-check" class="config" checked>
+          <b>Nearest Neighbor</b>
+          <div>K: <input id="nn-k" class="form-control config" value="1"/></div>
+        </div>
+        <div>
+          <b>Random Seed</b>
+          <div><input id="random-seed" class="form-control config" value="hello."/></div>
+        </div>
+        <input type="checkbox" id="auto"> Automatically run tests<br/>
+        <button id="go" class="btn btn-large btn-primary">Run Tests</button>
+      </div>
+
+      <div class="col-lg-9">
+        <canvas id="output" width="600" height="400"></canvas>
+        <table id="output-stats" class="table">
+          <tr><th>Estimator</th><th>Mean Squared Error on Independent Equal-Sized Test Data</th></tr>
+          <tr><td>Linear Regression</td><td id="out-linreg"></td></tr>
+          <tr><td>Nearest Neighbor</td><td id="out-nn"></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- scripts -->
+
+    <!-- stats -->
+    <script src="../../build/main.js"></script>
+    <!-- jquery -->
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- coffee -->
+    <script src="../../bower_components/coffee-script/extras/coffee-script.js"></script>
+    <!-- seedrandom -->
+    <script src="../../bower_components/seedrandom/seedrandom.js"></script>
+
+    <!-- frontend script -->
+    <script src="./index.coffee" type="text/coffeescript"></script>
+  </body>
+</html>

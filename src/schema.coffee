@@ -2,7 +2,7 @@
 # ======
 # This document lays out the base classes for all
 # the other classes in this project.
-helper = require './helper'
+helper = require './helper.coffee'
 
 # Continuous Entities
 # ===================

@@ -9,6 +9,7 @@
   "author": "Anthony Bau",
   "license": "MIT",
   "dependencies": {
+    "kdt": "^0.1.0",
     "numeric": "^1.2.6"
   },
   "devDependencies": {

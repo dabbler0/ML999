@@ -11,5 +11,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "coffee-script": "~1.9.1",
+    "seedrandom": "~2.3.11"
+  }
 }

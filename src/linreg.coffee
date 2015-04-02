@@ -1,4 +1,4 @@
-schema = require './schema'
+schema = require './schema.coffee'
 numeric = require 'numeric'
 
 # LinearRegressor

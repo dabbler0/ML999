@@ -36,3 +36,18 @@ exports.normalizeLog = (map) ->
 
   normalized = exports.normalize(power)
   return exports.mapmap normalized, (x) -> Math.log x
+
+exports.distance = (a, b) ->
+  distance = 0
+  for el, i in a
+    distance += (a[i] - b[i]) ** 2
+  return Math.sqrt distance
+
+exports.keySortFunction = (f) ->
+  return (a, b) ->
+    fa = f(a); fb = f(b)
+    if fa < fb
+      return -1
+    else if fa > fb
+      return 1
+    else return 0
