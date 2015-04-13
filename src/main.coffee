@@ -3,4 +3,5 @@ module.exports = {
   linreg: require './linreg.coffee'
   test: require './test-helper.coffee'
   nn: require './neighbor.coffee'
+  gauss: require './gauss.coffee'
 }

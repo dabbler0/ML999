@@ -4884,6 +4884,21 @@ numeric.svd= function svd(A) {
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],3:[function(require,module,exports){
+var numeric;
+
+numeric = require('numeric');
+
+exports.gaussianDistribution = function(n, u, S) {
+  var det;
+  det = numeric.det(S);
+  return function(x) {
+    return Math.pow(Math.E, -(1 / 2) * numeric.dot(numeric.dot(numeric.sub(x, u), S), numeric.sub(x, u))) / (Math.pow(2 * Math.PI, n / 2) * det);
+  };
+};
+
+
+
+},{"numeric":2}],4:[function(require,module,exports){
 exports.mapmap = function(map, f) {
   var key, result, val;
   result = {};
@@ -4980,7 +4995,7 @@ exports.keySortFunction = function(f) {
 
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var LinearRegressor, LinearRegressorEstimator, numeric, schema,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -4992,17 +5007,23 @@ numeric = require('numeric');
 exports.LinearRegressor = LinearRegressor = (function(superClass) {
   extend(LinearRegressor, superClass);
 
-  function LinearRegressor(bases) {
+  function LinearRegressor(bases, lambda) {
+    var i, j;
     this.bases = bases;
+    this.lambda = lambda != null ? lambda : 0;
     this.left = (function() {
       var k, ref, results;
       results = [];
-      for (k = 0, ref = this.bases.length; 0 <= ref ? k < ref : k > ref; 0 <= ref ? k++ : k--) {
+      for (i = k = 0, ref = this.bases.length; 0 <= ref ? k < ref : k > ref; i = 0 <= ref ? ++k : --k) {
         results.push((function() {
           var l, ref1, results1;
           results1 = [];
-          for (l = 0, ref1 = this.bases.length; 0 <= ref1 ? l < ref1 : l > ref1; 0 <= ref1 ? l++ : l--) {
-            results1.push(0);
+          for (j = l = 0, ref1 = this.bases.length; 0 <= ref1 ? l < ref1 : l > ref1; j = 0 <= ref1 ? ++l : --l) {
+            if (i === j && i !== 0) {
+              results1.push(this.lambda);
+            } else {
+              results1.push(0);
+            }
           }
           return results1;
         }).call(this));
@@ -5072,17 +5093,18 @@ LinearRegressorEstimator = (function(superClass) {
 
 
 
-},{"./schema.coffee":7,"numeric":2}],5:[function(require,module,exports){
+},{"./schema.coffee":8,"numeric":2}],6:[function(require,module,exports){
 module.exports = {
   schema: require('./schema.coffee'),
   linreg: require('./linreg.coffee'),
   test: require('./test-helper.coffee'),
-  nn: require('./neighbor.coffee')
+  nn: require('./neighbor.coffee'),
+  gauss: require('./gauss.coffee')
 };
 
 
 
-},{"./linreg.coffee":4,"./neighbor.coffee":6,"./schema.coffee":7,"./test-helper.coffee":8}],6:[function(require,module,exports){
+},{"./gauss.coffee":3,"./linreg.coffee":5,"./neighbor.coffee":7,"./schema.coffee":8,"./test-helper.coffee":9}],7:[function(require,module,exports){
 var NearestNeighborEstimator, NearestNeighborTrainer, helper, kdt, numeric, schema,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -5160,7 +5182,7 @@ NearestNeighborEstimator = (function(superClass) {
 
 
 
-},{"./helper.coffee":3,"./schema.coffee":7,"kdt":1,"numeric":2}],7:[function(require,module,exports){
+},{"./helper.coffee":4,"./schema.coffee":8,"kdt":1,"numeric":2}],8:[function(require,module,exports){
 var Corpus, DiscreteCorpus, DiscreteEstimator, DiscreteTrainer, Estimator, Trainer, helper,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -5361,7 +5383,7 @@ exports.DiscreteCorpus = DiscreteCorpus = (function() {
 
 
 
-},{"./helper.coffee":3}],8:[function(require,module,exports){
+},{"./helper.coffee":4}],9:[function(require,module,exports){
 var numeric;
 
 numeric = require('numeric');
@@ -5427,7 +5449,7 @@ exports.fourierBases = function(n, p) {
   for (k = j = 1, ref = p; 1 <= ref ? j <= ref : j >= ref; k = 1 <= ref ? ++j : --j) {
     fn = function(k, i) {
       return bases.push(function(x) {
-        return Math.sin(x[i] * 2 * Math.PI / k);
+        return Math.sin(x[i] * 2 * Math.PI * k);
       });
     };
     for (i = l = 0, ref1 = n; 0 <= ref1 ? l < ref1 : l > ref1; i = 0 <= ref1 ? ++l : --l) {
@@ -5471,7 +5493,7 @@ exports.generatingFunction = function(bases, thetas, variance) {
 
 
 
-},{"numeric":2}]},{},[5])(5)
+},{"numeric":2}]},{},[6])(6)
 });
 
 

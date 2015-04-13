@@ -6,8 +6,10 @@ numeric = require 'numeric'
 # This linear regressor uses the method of normal equations with
 # incremental update.
 exports.LinearRegressor = class LinearRegressor extends schema.Trainer
-  constructor: (@bases) ->
-    @left = ((0 for [0...@bases.length]) for [0...@bases.length])
+  constructor: (@bases, @lambda = 0) ->
+    @left = for i in [0...@bases.length] then for j in [0...@bases.length]
+      if i is j and i isnt 0 then @lambda
+      else 0
     @right = ([0] for [0...@bases.length])
 
   feed: ({input, output}) ->
