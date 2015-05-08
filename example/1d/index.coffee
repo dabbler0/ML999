@@ -14,6 +14,7 @@ render = ->
   linreg = {
     poly: Number $('#linreg-poly').val()
     fourier: Number $('#linreg-fourier').val()
+    lambda: Number $('#linreg-lambda').val()
   }
 
   knn = {
@@ -80,20 +81,6 @@ render = ->
     stats.test.fourierBases(1, linreg.fourier)
   )
 
-  if ($("#linreg-check")[0].checked)
-    linRegressor = new stats.linreg.LinearRegressor linregBases
-    trainingCorpus.feedTo linRegressor
-    linEstimator = linRegressor.generate()
-    plotFun '#00F', (x) -> linEstimator.estimate(x)
-
-  if ($("#nn-check")[0].checked)
-    neighborTrainer = new stats.nn.NearestNeighborTrainer knn.k
-    trainingCorpus.feedTo neighborTrainer
-    neighborEstimator = neighborTrainer.generate()
-    plotFun '#0F0', (x) -> neighborEstimator.estimate(x)
-
-  plotFun '#F00', (x) -> gen.raw(x)
-
   # Collect testing data
   testPoints = []
 
@@ -108,8 +95,21 @@ render = ->
 
   testCorpus = new stats.schema.Corpus testPoints
 
-  $('#out-linreg').text testCorpus.meanSquaredError linEstimator
-  $('#out-nn').text testCorpus.meanSquaredError neighborEstimator
+  if ($("#linreg-check")[0].checked)
+    linRegressor = new stats.linreg.LinearRegressor linregBases, linreg.lambda
+    trainingCorpus.feedTo linRegressor
+    linEstimator = linRegressor.generate()
+    plotFun '#00F', (x) -> linEstimator.estimate(x)
+    $('#out-linreg').text testCorpus.meanSquaredError linEstimator
+
+  if ($("#nn-check")[0].checked)
+    neighborTrainer = new stats.nn.NearestNeighborTrainer knn.k
+    trainingCorpus.feedTo neighborTrainer
+    neighborEstimator = neighborTrainer.generate()
+    plotFun '#0F0', (x) -> neighborEstimator.estimate(x)
+    $('#out-nn').text testCorpus.meanSquaredError neighborEstimator
+
+  plotFun '#F00', (x) -> gen.raw(x)
 
 $('#go').on 'click', render
 $('.config').on 'input change', ->

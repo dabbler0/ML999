@@ -31,7 +31,7 @@ exports.fourierBases = (n = 1, p = 1) ->
   if p is 0 then return bases
   for k in [1..p]
     for i in [0...n] then do (k, i) ->
-      bases.push (x) -> Math.sin x[i] * 2 * Math.PI / k
+      bases.push (x) -> Math.sin x[i] * 2 * Math.PI * k
   return bases
 
 exports.thetas = (n = 1, p = 1) -> ((Math.random() * 2 - 1) * p for [0...n])
