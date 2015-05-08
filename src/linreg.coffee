@@ -25,7 +25,7 @@ exports.LinearRegressor = class LinearRegressor extends schema.Trainer
     thetas = numeric.solve @left, @right
     return new LinearRegressorEstimator @bases, thetas
 
-class LinearRegressorEstimator extends schema.Estimator
+exports.LinearRegressionEstimator = class LinearRegressionEstimator extends schema.Estimator
   constructor: (@bases, @thetas) ->
   estimate: (input) ->
     basisTransformed = @bases.map (basis) -> basis(input)

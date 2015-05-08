@@ -4,37 +4,14 @@ MIN = -1
 
 WIDTH = HEIGHT = 600
 
-f = stats.gauss.gaussianDistribution 2, [0, 0], [
-  [10, 9]
-  [9, 10]
-]
-
-maxVal = 0
-for i in [0...25]
-  for j in [0...25]
-    maxVal = Math.max maxVal, f([i * (MAX - MIN) / STEPS + MIN, j * (MAX - MIN) / STEPS + MIN])
-
-data =
-  for i in [0...25]
-    for j in [0...25]
-      100 - 200 * f([i * (MAX - MIN) / STEPS + MIN, j * (MAX - MIN) / STEPS + MIN]) / maxVal
-
-console.log data
-
 svg = d3.select('#output')
         .append('svg')
         .attr('height', WIDTH)
         .attr('width', HEIGHT)
 
 group = svg.append 'g'
-
-md = group.data([data])
-          .surface3D(WIDTH, HEIGHT)
-          .surfaceHeight((d) -> d)
-          .surfaceColor((d) ->
-            c = d3.hsl((d+100), 0.6, 0.5).rgb()
-            return "rgb(#{Math.round(c.r)},#{Math.round(c.g)},#{Math.round(c.b)})"
-          )
+md = null
+data = null
 
 yaw = 0.5; pitch = 0.5; drag = false
 svg.on("mousedown", ->
@@ -49,3 +26,36 @@ svg.on("mousedown", ->
     pitch = Math.max(-Math.PI/2, Math.min(Math.PI/2,pitch))
     md.turntable(yaw, pitch)
 )
+
+rerender = ->
+  f = stats.gauss.gaussianDistribution 2, [0, 0], [
+    [Number($('#S-1-1').val()), Number($('#S-1-2').val())]
+    [Number($('#S-2-1').val()), Number($('#S-2-2').val())]
+  ]
+
+  maxVal = 0
+  for i in [0...25]
+    for j in [0...25]
+      maxVal = Math.max maxVal, f([i * (MAX - MIN) / STEPS + MIN, j * (MAX - MIN) / STEPS + MIN])
+
+  data =
+    for i in [0...25]
+      for j in [0...25]
+        100 - 200 * f([i * (MAX - MIN) / STEPS + MIN, j * (MAX - MIN) / STEPS + MIN]) / maxVal
+
+  md = group.data([data])
+            .surface3D(WIDTH, HEIGHT)
+            .surfaceHeight((d) -> d)
+            .surfaceColor((d) ->
+              c = d3.hsl((d+100), 0.6, 0.5).rgb()
+              return "rgb(#{Math.round(c.r)},#{Math.round(c.g)},#{Math.round(c.b)})"
+            )
+
+$('.Si').on 'input', ->
+  try
+    rerender()
+
+$('#S-1-2,#S-2-1').on 'input', ->
+  $("#S-1-2,#S-2-1").val @value
+
+rerender()

@@ -10,6 +10,12 @@ exports.sum = (map) ->
     sum += val
   return sum
 
+exports.avg = (arr) ->
+  avg = 0
+  for el in arr
+    avg += el / arr.length
+  return avg
+
 exports.max = (map) ->
   max = -Infinity
   for key, val of map
